@@ -5,7 +5,16 @@ Collection of Rakefiles to start of and or avoid the Arduino IDE.
 Here you'll find a pure C, C++ and Arduino C++ scaffolds with optional
 libraries support.
 
-Just clone or download the zipfile and copy one to your project`s name.
+Just clone:
+
+    git clone git://github.com/nofxx/avr_scaffold.git
+    cp -r avr_scaffold/c ~/newproject
+
+or download:
+
+    https://github.com/nofxx/avr_scaffold/zipball/master    # .zip
+
+    https://github.com/nofxx/avr_scaffold/tarball/master    # .tar.gz
 
 
 ## Common Usage
@@ -117,6 +126,37 @@ corresponding with your operating system under the 'Identifying the Name of
 the Arduino UNO Serial Port' later in this document.
 
 
+## Serial Monitor
+
+Collection of software that can be used to replace the IDE's one:
+
+### Scripting
+
+Subduino - Ruby
+http://github.com/nofxx/subduino
+
+serialport - Ruby
+https://github.com/hparra/ruby-serialport
+
+pySerial - Python
+http://pyserial.sourceforge.net
+
+node-serialport - JS
+https://github.com/voodootikigod/node-serialport
+
+
+### Graphical
+
+hterm - Linux/Windows
+http://www.der-hammer.info/terminal
+
+gtkterm - Linux/Mac
+https://fedorahosted.org/gtkterm
+
+realterm - Windows
+http://realterm.sourceforge.net
+
+
 ## Exploring the Source Code
 
 TBD
@@ -129,6 +169,8 @@ Tested on Duemilanove and the Blackwidow.
 
 Chips ATMEGA328p, ATMEGA32, ATMEGA64 and ATTiny85.
 Programmer USBASP.
+
+
 
 [WinAVR_DL]: http://sourceforge.net/projects/winavr/files/ "WinAVR Download"
 [rifw]: http://rubyinstaller.org/
