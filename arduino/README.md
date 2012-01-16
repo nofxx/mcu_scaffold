@@ -1,11 +1,15 @@
 # ARDUINO CPP/C++ SCAFFOLD
 
+Use this to start an Arduino project or to avoid using it.
+Just place your .pde file here and it should work.
+
+
 ## Usage
 
 ```bash
 $ rake -T # see all tasks
 $ rake # build the project, flash to the arduino
-$ rake clean # clean the project
+$ rake clobber # clean the project
 ```
 
 ## Board Resources

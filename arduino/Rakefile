@@ -1,3 +1,4 @@
+require 'rake/clean'
 require 'tempfile'
 require 'fileutils'
 
@@ -50,7 +51,7 @@ desc "Compile and upload"
 task :default => [:compile, :upload]
 
 desc "Compile the hex file"
-task :compile => [:clean, :preprocess, :c, :cpp, :hex]
+task :compile => [:clobber, :preprocess, :c, :cpp, :hex]
 
 desc "Upload compiled hex file to your device"
 task :upload do
@@ -59,10 +60,8 @@ task :upload do
   sh "#{AVRDUDE} -C#{AVRDUDE_CONF} -q -q -p#{MCU} -c#{PROGRAMMER} -P#{PORT} -b#{BITRATE} -D -Uflash:w:#{hex}:i"
 end
 
-desc "Delete the build output directory"
-task :clean do
-  FileUtils.rm_rf(BUILD_OUTPUT)
-end
+# Setup what should be cleaned.
+CLEAN.include(BUILD_OUTPUT)
 
 task :preprocess do
   pde = "#{PROJECT}.pde"

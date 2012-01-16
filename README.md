@@ -1,6 +1,7 @@
 # AVR SCAFFOLD
 
 Collection of Rakefiles to start of and or avoid the Arduino IDE.
+
 Here you'll find a pure C, C++ and Arduino C++ scaffolds with optional
 libraries support.
 
