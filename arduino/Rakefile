@@ -1,0 +1,108 @@
+require 'tempfile'
+require 'fileutils'
+
+PROJECT          ||= File.basename(Dir.glob("*.pde").first, ".pde")
+MCU              ||= 'atmega328p'
+CPU              ||= '16000000L'
+BITRATE          ||= '115200'
+PROGRAMMER       ||= 'arduino' # 'stk500v1'
+
+BUILD_OUTPUT     ||= 'build'
+EXTRA_LIBRARIES  ||= [] # %w{ SoftwareSerial Wire }
+
+case RUBY_PLATFORM
+when /darwin/
+  PORT             ||= Dir.glob('/dev/tty.usbmodem*').first
+  ARDUINO_HARDWARE ||= '/Applications/Arduino.app/Contents/Resources/Java/hardware'
+  AVRDUDE_CONF     ||= "#{ARDUINO_HARDWARE}/tools/avr/etc/avrdude.conf"
+  ARDUINO_CORES    ||= "#{ARDUINO_HARDWARE}/arduino/cores/arduino"
+  ARDUINO_LIBS     ||= '/Applications/Arduino.app/Contents/Resources/Java/libraries'
+when /linux/
+  PORT             ||= Dir.glob('/dev/ttyUSB*').first
+  ARDUINO_HARDWARE ||= '/usr/share/arduino/hardware'
+  AVRDUDE_CONF     ||= '/etc/avrdude.conf'
+  ARDUINO_CORES    ||= "#{ARDUINO_HARDWARE}/arduino/cores/arduino"
+  ARDUINO_LIBS     ||= '/usr/share/arduino/libraries'
+else
+  raise "Dunno how to work on #{RUBY_PLATFORM}"
+end
+
+ARDUINO_VARIANT  ||= "#{ARDUINO_HARDWARE}/arduino/variants/standard"
+AVRDUDE          ||= 'avrdude'
+AVR_G_PLUS_PLUS  ||= 'avr-g++'
+AVR_GCC          ||= 'avr-gcc'
+AVR_AR           ||= 'avr-ar'
+AVR_OBJCOPY      ||= 'avr-objcopy'
+
+def build_output_path(file)
+  Dir.mkdir(BUILD_OUTPUT) if Dir.exist?(BUILD_OUTPUT) == false
+  File.join(BUILD_OUTPUT, file)
+end
+
+EXTRA_LIBRARIES.map! { |l| "#{ARDUINO_LIBS}/#{l}" }
+EXTRA_LIBRARIES.map! { |l| Dir.exists?("#{l}/utility") ? [l, "#{l}/utility"] : l }
+
+C_FILES          ||= Dir.glob(["#{ARDUINO_CORES}/*.c", EXTRA_LIBRARIES.map {|lp| "#{lp}/**/*.c"}].flatten)
+CPP_FILES        ||= Dir.glob(["#{ARDUINO_CORES}/*.cpp", EXTRA_LIBRARIES.map {|lp| "#{lp}/**/*.cpp"}].flatten) +
+  [build_output_path("#{PROJECT}.cpp")]
+
+desc "Compile and upload"
+task :default => [:compile, :upload]
+
+desc "Compile the hex file"
+task :compile => [:clean, :preprocess, :c, :cpp, :hex]
+
+desc "Upload compiled hex file to your device"
+task :upload do
+  raise "Can't find programmer serial port on #{PORT}" unless PORT
+  hex = build_output_path("#{PROJECT}.hex")
+  sh "#{AVRDUDE} -C#{AVRDUDE_CONF} -q -q -p#{MCU} -c#{PROGRAMMER} -P#{PORT} -b#{BITRATE} -D -Uflash:w:#{hex}:i"
+end
+
+desc "Delete the build output directory"
+task :clean do
+  FileUtils.rm_rf(BUILD_OUTPUT)
+end
+
+task :preprocess do
+  pde = "#{PROJECT}.pde"
+  cpp = build_output_path("#{PROJECT}.cpp")
+  File.open(cpp, 'w') do |file|
+    file.puts '#include "Arduino.h"'  #"WProgram.h"'
+    file.puts File.read(pde)
+  end
+end
+
+task :c do
+  C_FILES.each do |source|
+    output = build_output_path(File.basename(source, File.extname(source)) + ".o")
+    sh "#{AVR_GCC} -c -g -Os -w -ffunction-sections -fdata-sections -mmcu=#{MCU} -DF_CPU=#{CPU} -DARDUINO=22 -I#{ARDUINO_CORES} -I #{ARDUINO_VARIANT} -I#{EXTRA_LIBRARIES.join(' -I')} #{source} -o#{output}"
+  end
+end
+
+task :cpp do
+  CPP_FILES.each do |source|
+    output = build_output_path(File.basename(source, File.extname(source)) + ".o")
+    sh "#{AVR_G_PLUS_PLUS} -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=#{MCU} -DF_CPU=#{CPU} -DARDUINO=22 -I#{ARDUINO_CORES} -I#{ARDUINO_VARIANT} -I#{EXTRA_LIBRARIES.join(' -I')} #{source} -o#{output}"
+  end
+end
+
+task :hex do
+  o       = build_output_path("#{PROJECT}.o")
+  elf     = build_output_path("#{PROJECT}.elf")
+  archive = build_output_path('core.a')
+  eep     = build_output_path("#{PROJECT}.eep")
+  hex     = build_output_path("#{PROJECT}.hex")
+
+  (C_FILES + CPP_FILES).each do |file|
+    file = build_output_path(File.basename(file, File.extname(file)) + ".o")
+    sh "#{AVR_AR} rcs #{archive} #{file}"
+  end
+
+  sh "#{AVR_GCC} -Os -Wl,--gc-sections -mmcu=#{MCU} -o #{elf} #{o} #{archive} -L#{BUILD_OUTPUT} -lm"
+  sh "#{AVR_OBJCOPY} -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0 #{elf} #{eep}"
+  sh "#{AVR_OBJCOPY} -O ihex -R .eeprom #{elf} #{hex}"
+  size = `avr-size -A #{hex}`.match(/Total\s*(\d*)/)[1]
+  puts "\n\nCompile OK! #{size} bytes."
+end
+
