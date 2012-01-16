@@ -1,6 +1,4 @@
-require 'rake/clean'
-require 'fileutils'
-
+# AVR C Scaffold Rakefile
 # Program Name
 PROG = 'scaffold'
 
@@ -11,7 +9,7 @@ PARTNO = ENV['PARTNO'] || MCU
 # Flash burner
 PROGRAMMER = ENV['PROGRAMMER'] || 'arduino' # usbasp
 SERIAL_PORT = ENV['SERIAL_PORT'] ||  Dir.glob(
-      "/dev/tty#{RUBY_PLATFORM =~ /linux/ ? 'USB' : '.usbmodel'}").first
+      "/dev/tty#{RUBY_PLATFORM =~ /linux/ ? 'USB' : '.usbmodel'}*").first
 
 # Arduino Uno 115200 | Duemilanove 57600
 BAUDS = ENV['BAUDS'] || 115200 # 57600
@@ -21,6 +19,11 @@ F_CPU = ENV['F_CPU'] || '16000000UL'
 SRCDIR = 'src'
 BUILDDIR = 'build'
 SRC = FileList["#{SRCDIR}/**/*.c"]
+
+# Don't edit below this line.
+
+require 'rake/clean'
+require 'fileutils'
 
 # Create a mapping from objects to source files.
 OBJ = SRC.inject({}) do |cont, s|

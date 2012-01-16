@@ -16,3 +16,8 @@ $ rake clobber # clean the project
 
 * ATMega328P datasheet - http://www.atmel.com/dyn/resources/prod_documents/doc8161.pdf
 * Arduino UNO Schematic - http://arduino.cc/en/uploads/Main/arduino-uno-schematic.pdf
+
+
+## License
+
+Rakefile originally from https://github.com/AndrewVos/arduino-tools

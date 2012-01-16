@@ -1,6 +1,5 @@
-require 'rake/clean'
-require 'tempfile'
-require 'fileutils'
+# Arduino Cpp Rakefile
+# Fit this to your project's target
 
 PROJECT          ||= File.basename(Dir.glob("*.pde").first, ".pde")
 MCU              ||= 'atmega328p'
@@ -8,8 +7,13 @@ CPU              ||= '16000000L'
 BITRATE          ||= '115200'
 PROGRAMMER       ||= 'arduino' # 'stk500v1'
 
-BUILD_OUTPUT     ||= 'build'
 EXTRA_LIBRARIES  ||= [] # %w{ SoftwareSerial Wire }
+
+# Don't change below this line.
+
+require 'rake/clean'
+require 'tempfile'
+require 'fileutils'
 
 case RUBY_PLATFORM
 when /darwin/
@@ -34,6 +38,7 @@ AVR_G_PLUS_PLUS  ||= 'avr-g++'
 AVR_GCC          ||= 'avr-gcc'
 AVR_AR           ||= 'avr-ar'
 AVR_OBJCOPY      ||= 'avr-objcopy'
+BUILD_OUTPUT     ||= 'build'
 
 def build_output_path(file)
   Dir.mkdir(BUILD_OUTPUT) if Dir.exist?(BUILD_OUTPUT) == false
