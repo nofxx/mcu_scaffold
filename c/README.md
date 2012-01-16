@@ -1,4 +1,4 @@
-#
+# AVR C SCAFFOLD
 
 ## Usage
 

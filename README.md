@@ -1,14 +1,18 @@
-#
+# AVR SCAFFOLD
 
-## Usage
+Collection of Rakefiles to start of and or avoid the Arduino IDE.
+Here you'll find a pure C, C++ and Arduino C++ scaffolds with optional
+libraries support.
+
+Just clone or download the zipfile and copy one to your project`s name.
+
+
+## Common Usage
 
 ```bash
 $ rake -T # see all tasks
 $ rake # build the project, flash to the arduino
 $ rake clobber # clean the project
-$ rake SERIAL_PORT=/dev/ttyS99999 # use a different serial port
-$ rake target:backup[backup.hex] # dump the flash from the target into backup.hex
-$ rake target:preprocess # build a preprocessed version of the C files
 ```
 
 ## Board Resources
@@ -111,73 +115,13 @@ the name of the serial port used by the Arduino UNO, consult with the section
 corresponding with your operating system under the 'Identifying the Name of
 the Arduino UNO Serial Port' later in this document.
 
-### Building the Scaffold
-
-The scaffold can be built, linked, and flashed by running the following
-command:
-
-    rake SERIAL_PORT=[serial port name]
-
-The following is an example of the output one can expect to see when running
-the ```rake``` command in a windows environment. In this example, the serial
-port is COM3. It may be different in your environment.
-
-    C:\Development\arduino_c_scaffold>rake SERIAL_PORT=COM3
-    avr-gcc -DTARGET -DF_CPU=16000000UL -mmcu=atmega328p -Iinclude/ -Wall -Os -c -o build/src/main.o src/main.c
-    avr-gcc -mmcu=atmega328p build/src/main.o -o scaffold.bin
-    avr-objcopy -O ihex -R .eeprom scaffold.bin scaffold.hex
-    avrdude -F -V -c arduino -p ATMEGA328P -P COM3 -b 115200 -U flash:w:scaffold.hex
-
-    avrdude: AVR device initialized and ready to accept instructions
-
-    Reading | ################################################## | 100% 0.02s
-
-    avrdude: Device signature = 0x1e950f
-    avrdude: NOTE: FLASH memory has been specified, an erase cycle will be performed
-             To disable this feature, specify the -D option.
-    avrdude: erasing chip
-    avrdude: reading input file "scaffold.hex"
-    avrdude: input file scaffold.hex auto detected as Intel Hex
-    avrdude: writing flash (304 bytes):
-
-    Writing | ################################################## | 100% 0.08s
-
-    avrdude: 304 bytes of flash written
-
-    avrdude: safemode: Fuses OK
-
-    avrdude done.  Thank you.
-
-If the file at ```src/main.c``` hasn't been altered, you should notice that
-the yellow surface-mount LED on the Arduino UNO has begun to blink. It should
-be cycling on and off with durations of about 1 second.
-
-## Identifying the Name of the Arduino UNO Serial Port
-
-### Windows
-
-TBD
-
-### OSX
-
-TBD
-
-### Linux
-
-Grep for "USB" ttys (virtual serial ports):
-
-    ls /dev/ | grep "USB"
-
-Usually:
-
-    /dev/ttyUSB0
-
 
 ## Exploring the Source Code
 
 TBD
 
-## AVR C Scaffold
+
+## AVR Scaffold
 
 This works with others arduinos and barebones AVRs too.
 Tested on Duemilanove and the Blackwidow.
