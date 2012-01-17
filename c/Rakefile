@@ -12,7 +12,7 @@ SERIAL_PORT = ENV['SERIAL_PORT'] ||  Dir.glob(
       "/dev/tty#{RUBY_PLATFORM =~ /linux/ ? 'USB' : '.usbmodel'}*").first
 
 # Arduino Uno 115200 | Duemilanove 57600
-BAUDS = ENV['BAUDS'] || 115200 # 57600
+BAUDS = ENV['BAUDS'] || 57600 # 115200 #
 F_CPU = ENV['F_CPU'] || '16000000UL'
 
 # Paths
