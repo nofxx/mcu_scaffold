@@ -1,10 +1,10 @@
-# Arduino Cpp Rakefile
+# Arduino Cpp/C++ Rakefile
 # Fit this to your project's target
 
 PROJECT          ||= File.basename(Dir.glob("*.pde").first, ".pde")
 MCU              ||= 'atmega328p'
 CPU              ||= '16000000L'
-BITRATE          ||= '115200'
+BITRATE          ||= '57600' # '115200' Uno
 PROGRAMMER       ||= 'arduino' # 'stk500v1'
 
 EXTRA_LIBRARIES  ||= [] # %w{ SoftwareSerial Wire }
@@ -47,6 +47,7 @@ end
 
 EXTRA_LIBRARIES.map! { |l| "#{ARDUINO_LIBS}/#{l}" }
 EXTRA_LIBRARIES.map! { |l| Dir.exists?("#{l}/utility") ? [l, "#{l}/utility"] : l }
+EXTRA_INCLUDES = EXTRA_LIBRARIES.map { "-I#{lib} " }.join
 
 C_FILES          ||= Dir.glob(["#{ARDUINO_CORES}/*.c", EXTRA_LIBRARIES.map {|lp| "#{lp}/**/*.c"}].flatten)
 CPP_FILES        ||= Dir.glob(["#{ARDUINO_CORES}/*.cpp", EXTRA_LIBRARIES.map {|lp| "#{lp}/**/*.cpp"}].flatten) +
@@ -80,14 +81,14 @@ end
 task :c do
   C_FILES.each do |source|
     output = build_output_path(File.basename(source, File.extname(source)) + ".o")
-    sh "#{AVR_GCC} -c -g -Os -w -ffunction-sections -fdata-sections -mmcu=#{MCU} -DF_CPU=#{CPU} -DARDUINO=22 -I#{ARDUINO_CORES} -I #{ARDUINO_VARIANT} -I#{EXTRA_LIBRARIES.join(' -I')} #{source} -o#{output}"
+    sh "#{AVR_GCC} -c -g -Os -w -ffunction-sections -fdata-sections -mmcu=#{MCU} -DF_CPU=#{CPU} -DARDUINO=22 -I#{ARDUINO_CORES} -I #{ARDUINO_VARIANT} #{EXTRA_INCLUDES} #{source} -o#{output}"
   end
 end
 
 task :cpp do
   CPP_FILES.each do |source|
     output = build_output_path(File.basename(source, File.extname(source)) + ".o")
-    sh "#{AVR_G_PLUS_PLUS} -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=#{MCU} -DF_CPU=#{CPU} -DARDUINO=22 -I#{ARDUINO_CORES} -I#{ARDUINO_VARIANT} -I#{EXTRA_LIBRARIES.join(' -I')} #{source} -o#{output}"
+    sh "#{AVR_G_PLUS_PLUS} -c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -mmcu=#{MCU} -DF_CPU=#{CPU} -DARDUINO=22 -I#{ARDUINO_CORES} -I#{ARDUINO_VARIANT} #{EXTRA_INCLUDES} #{source} -o#{output}"
   end
 end
 
