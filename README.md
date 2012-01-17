@@ -101,7 +101,7 @@ $ sudo pacman -S avrdude gcc-avr
 
 ## Building and Running the Sample Project
 
-The scaffold is driven by a Rakefile. If you're not familiar with
+Each scaffold is driven by a Rakefile. If you're not familiar with
 [Rake][rake], you'll want to take some time to familiarize yourself with it.
 It's integral to the operation of this scaffolding.
 
@@ -112,18 +112,15 @@ scaffold directory. You'll see something like this:
     $ rake -T
     rake clean                       # Remove any temporary products.
     rake clobber                     # Remove any generated file.
-    rake target:backup[backup_name]  # Make a backup hex image of the flash con...
-    rake target:build                # Build the project for the Arduino
-    rake target:convert              # Convert the output binary to a hex file ...
-    rake target:link                 # Link the built project for the Arduino
-    rake target:preprocess           # Generate the preprocessed source files
-    rake target:program              # Program the Arduino over the serial port.
+    ...
 
-The name of the serial port used by the Arduino UNO needs to be passed as an
-environment variable to the rake command. If you do not know how to identify
-the name of the serial port used by the Arduino UNO, consult with the section
+The name of the serial port used by the programmer may be passed as an
+environment variable to the rake. If you do not know how to identify
+the name of the serial port used by the programmer, consult with the section
 corresponding with your operating system under the 'Identifying the Name of
-the Arduino UNO Serial Port' later in this document.
+the Programmer Serial Port' later in this document.
+
+    rake SERIAL_PORT=[serial port name]
 
 
 ## Serial Monitor
