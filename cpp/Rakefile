@@ -1,0 +1,92 @@
+# AVR Cpp/C++ Rakefile
+# Fit this to your project's target
+
+PROJECT          ||= 'scaffold'
+MCU              ||= 'atmega328p'
+CPU              ||= '16000000L'
+BITRATE          ||= '57600' # '19200' # '115200'
+PROGRAMMER       ||= 'arduino' # 'stk500v1'
+
+EXTRA_LIBRARIES  ||= []
+
+# Don't change below this line.
+
+require 'rake/clean'
+require 'tempfile'
+require 'fileutils'
+
+PORT ||= ENV['PORT'] || Dir.glob("/dev/tty#{RUBY_PLATFORM =~ /darwin/ ? 'usbmodem' : 'USB'}*").first
+AVRDUDE          ||= 'avrdude'
+AVR_G_PLUS_PLUS  ||= 'avr-g++'
+AVR_GCC          ||= 'avr-gcc'
+AVR_AR           ||= 'avr-ar'
+AVR_OBJCOPY      ||= 'avr-objcopy'
+BUILD_OUTPUT     ||= 'build'
+
+def build_output_path(file)
+  Dir.mkdir(BUILD_OUTPUT) if Dir.exist?(BUILD_OUTPUT) == false
+  File.join(BUILD_OUTPUT, file)
+end
+
+C_FILES          ||= Dir.glob("src/*.c")
+CPP_FILES        ||= Dir.glob("src/*.cpp")
+
+EXTRA_INCLUDES = EXTRA_LIBRARIES.map { |lib| "-I#{lib} " }.join
+
+desc "Compile and upload"
+task :default => [:compile, :upload]
+
+desc "Compile the hex file"
+task :compile => [:clobber, :preprocess, :c, :cpp, :hex]
+
+# Setup what should be cleaned.
+CLEAN.include(BUILD_OUTPUT)
+
+task :preprocess do
+end
+
+task :c do
+  C_FILES.each do |source|
+    output = build_output_path(File.basename(source, File.extname(source)) + ".o")
+    comm = "#{AVR_GCC} -c -g -Os -w -ffunction-sections -fdata-sections " +
+      "-mmcu=#{MCU} -DF_CPU=#{CPU} -Iinclude/ #{EXTRA_INCLUDES}" +
+      "#{source} -o#{output}"
+    sh comm
+  end
+end
+
+task :cpp do
+  CPP_FILES.each do |source|
+    output = build_output_path(File.basename(source, File.extname(source)) + ".o")
+    comm =  "#{AVR_G_PLUS_PLUS} -c -g -Os -w -fno-exceptions " +
+      "-ffunction-sections -fdata-sections -mmcu=#{MCU} -DF_CPU=#{CPU} " +
+      "-I include/ #{EXTRA_INCLUDES} #{source} -o#{output}"
+    sh comm
+  end
+end
+
+task :hex do
+  o       = build_output_path("main.o")
+  elf     = build_output_path("#{PROJECT}.elf")
+  archive = build_output_path('core.a')
+  eep     = build_output_path("#{PROJECT}.eep")
+  hex     = build_output_path("#{PROJECT}.hex")
+
+  (C_FILES + CPP_FILES).each do |file|
+    file = build_output_path(File.basename(file, File.extname(file)) + ".o")
+    sh "#{AVR_AR} rcs #{archive} #{file}"
+  end
+
+  sh "#{AVR_GCC} -Os -Wl,--gc-sections -mmcu=#{MCU} -o #{elf} #{o} #{archive} -L#{BUILD_OUTPUT} -lm"
+  sh "#{AVR_OBJCOPY} -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0 #{elf} #{eep}"
+  sh "#{AVR_OBJCOPY} -O ihex -R .eeprom #{elf} #{hex}"
+  size = `avr-size -A #{hex}`.match(/Total\s*(\d*)/)[1]
+  puts "\n\nCompile OK! #{size} bytes."
+end
+
+desc "Upload compiled hex file to your device"
+task :upload do
+  raise "Can't find programmer serial port on #{PORT}" unless PORT
+  hex = build_output_path("#{PROJECT}.hex")
+  sh "#{AVRDUDE} -p#{MCU} -c#{PROGRAMMER} -P#{PORT} -b#{BITRATE} -D -Uflash:w:#{hex}:i"
+end
