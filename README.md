@@ -127,6 +127,15 @@ the Programmer Serial Port' later in this document.
 
 Collection of software that can be used to replace the IDE's one:
 
+
+### Terminal
+
+minicom - Linux/OSX
+http://alioth.debian.org/projects/minicom
+
+picocom - Linux/OSX
+
+
 ### Scripting
 
 Subduino - Ruby
@@ -152,6 +161,14 @@ https://fedorahosted.org/gtkterm
 
 realterm - Windows
 http://realterm.sourceforge.net
+
+
+## ASSEMBLY
+
+There's .inc files included in asm/incs.
+After trying for full day to download from:
+http://www.attiny.com/definitions.htm
+Server was off.
 
 
 ## Exploring the Source Code
