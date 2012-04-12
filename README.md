@@ -130,8 +130,21 @@ Collection of software that can be used to replace the IDE's one:
 
 ### Terminal
 
+GNU screen - Linux/OSX
+http://www.gnu.org/software/screen/
+
+Example 19200 bps, 8-N-1 parity:
+
+    screen /dev/ttyUSB0 19200,cs8
+
+
 minicom - Linux/OSX
 http://alioth.debian.org/projects/minicom
+
+Example 19200 bps, 8-N-1 parity:
+
+    minicom -b 19200 -8 -D /dev/ttyUSB0
+
 
 picocom - Linux/OSX
 
