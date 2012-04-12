@@ -47,7 +47,7 @@ end
 
 EXTRA_LIBRARIES.map! { |l| "#{ARDUINO_LIBS}/#{l}" }
 EXTRA_LIBRARIES.map! { |l| Dir.exists?("#{l}/utility") ? [l, "#{l}/utility"] : l }
-EXTRA_INCLUDES = EXTRA_LIBRARIES.map { |lib| "-I#{lib} " }.join
+EXTRA_INCLUDES = EXTRA_LIBRARIES.flatten.map { |lib| "-I#{lib} " }.join
 
 C_FILES          ||= Dir.glob(["#{ARDUINO_CORES}/*.c", EXTRA_LIBRARIES.map {|lp| "#{lp}/**/*.c"}].flatten)
 CPP_FILES        ||= Dir.glob(["#{ARDUINO_CORES}/*.cpp", EXTRA_LIBRARIES.map {|lp| "#{lp}/**/*.cpp"}].flatten) +
