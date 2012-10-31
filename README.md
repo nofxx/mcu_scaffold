@@ -1,14 +1,12 @@
 # AVR SCAFFOLD
 
-Collection of Rakefiles to start of and or avoid the Arduino IDE.
+Collection of Rakefiles to start of and avoid the Arduino IDE.
 
-Here you'll find a pure C, C++ and Arduino C++ scaffolds with optional
-libraries support.
+Here you'll find a pure C, C++ and Arduino C++ scaffolds with optional libraries support.
 
 Just clone:
 
     git clone git://github.com/nofxx/avr_scaffold.git
-    cp -r avr_scaffold/c ~/newproject
 
 or download:
 
@@ -16,6 +14,10 @@ or download:
 
     https://github.com/nofxx/avr_scaffold/tarball/master    # .tar.gz
 
+And choose a scaffold, <LANG> can be c, cpp, asm or arduino:
+    
+    cp -r avr_scaffold/<LANG> ~/newproject
+    
 
 ## Common Usage
 
@@ -24,6 +26,7 @@ $ rake -T # see all tasks
 $ rake # build the project, flash to the arduino
 $ rake clobber # clean the project
 ```
+
 
 ## Board Resources
 
