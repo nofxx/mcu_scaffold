@@ -208,3 +208,7 @@ Programmer USBASP.
 [adp]: http://arduino.cc/en/Main/Software
 [rake]: http://en.wikipedia.org/wiki/Rake_(software)
 [hb]: http://mxcl.github.com/homebrew/
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nofxx/avr_scaffold/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
