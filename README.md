@@ -33,56 +33,15 @@ $ rake clobber # clean the project
 * ATMega328P datasheet - http://www.atmel.com/dyn/resources/prod_documents/doc8161.pdf
 * Arduino UNO Schematic - http://arduino.cc/en/uploads/Main/arduino-uno-schematic.pdf
 
+
+
 ## Getting Started
 
 The following are instructions for getting up and running under different
 operating systems. This will take you through installing avr-gcc, avr-libc,
 avrdude, and the AVR GNU Binutils.
 
-### Windows
 
-First, install a recent version of Ruby. You can grab a Windows installer for
-Ruby from the [RubyInstaller for Windows][rifw] page. After installing Ruby,
-you'll need to open a console and use the ```gem``` command to install the
-Cucumber and
-
-Second, you'll need a copy of [WinAVR][WinAVR_DL]. Download the latest version
-and install it. You will want to make sure the option to 'Add directories to
-PATH' is checked.
-
-WinAVR contains all the tools you need to use this scaffolding including (but
-not limited to):
-
-* AVR GNU Binutils
-* AVR GNU Compiler Collection (GCC)
-* AVRDUDE
-* avr-libc
-
-In order to complete the next step, you'll need to download the Arduino
-software package this can be found on the [Arduino download page][adp].
-
-After you've installed Ruby and WinAVR, connect the Arduino UNO to your Windows
-computer via the USB cable. It will attempt to install a driver, but will
-fail. Follow the instructions on [arduino.cc][acc] to complete the
-installation of the drivers.
-
-### OSX
-
-I recommend installing the needed AVR tools by means of [Homebrew][hb]. If
-you're already setup with homebrew, then you should just have to execute the
-following commands. If not, take a moment to read a bit about Homebrew and get
-it setup on your Mac.
-
-Once you're ready, here are the commands to install the needed tools:
-
-```bash
-$ brew install avrdude
-$ brew install https://raw.github.com/larsimmisch/homebrew-alt/3a4f8ce4bcda88c25f4fa4ea3f42688a2ed03d12/avr/avr-binutils.rb
-$ brew install https://raw.github.com/larsimmisch/homebrew-alt/124853640317af04e11269c517d449dbd202773d/avr/avr-gcc.rb
-$ brew install https://raw.github.com/larsimmisch/homebrew-alt/7d774c6b15dafdee6ca518aff5e8368528d69ae0/avr/avr-libc.rb
-```
-
-**These are built from source and will take a while to complete.**
 
 ### Linux
 
@@ -126,6 +85,26 @@ the Programmer Serial Port' later in this document.
     rake SERIAL_PORT=[serial port name]
 
 
+
+### OSX
+
+I recommend installing the needed AVR tools by means of [Homebrew][hb]. If
+you're already setup with homebrew, then you should just have to execute the
+following commands. If not, take a moment to read a bit about Homebrew and get
+it setup on your Mac.
+
+Once you're ready, here are the commands to install the needed tools:
+
+```bash
+$ brew install avrdude
+$ brew install https://raw.github.com/larsimmisch/homebrew-alt/3a4f8ce4bcda88c25f4fa4ea3f42688a2ed03d12/avr/avr-binutils.rb
+$ brew install https://raw.github.com/larsimmisch/homebrew-alt/124853640317af04e11269c517d449dbd202773d/avr/avr-gcc.rb
+$ brew install https://raw.github.com/larsimmisch/homebrew-alt/7d774c6b15dafdee6ca518aff5e8368528d69ae0/avr/avr-libc.rb
+```
+
+**These are built from source and will take a while to complete.**
+
+
 ## Serial Monitor
 
 Collection of software that can be used to replace the IDE's one:
@@ -167,16 +146,14 @@ node-serialport - JS
 https://github.com/voodootikigod/node-serialport
 
 
+
 ### Graphical
 
-hterm - Linux/Windows
+hterm - Linux
 http://www.der-hammer.info/terminal
 
 gtkterm - Linux/Mac
 https://fedorahosted.org/gtkterm
-
-realterm - Windows
-http://realterm.sourceforge.net
 
 
 ## ASSEMBLY
@@ -201,10 +178,6 @@ Chips ATMEGA328p, ATMEGA32, ATMEGA64 and ATTiny85.
 Programmer USBASP.
 
 
-
-[WinAVR_DL]: http://sourceforge.net/projects/winavr/files/ "WinAVR Download"
-[rifw]: http://rubyinstaller.org/
-[acc]: http://arduino.cc/en/Guide/Windows#toc4
 [adp]: http://arduino.cc/en/Main/Software
 [rake]: http://en.wikipedia.org/wiki/Rake_(software)
 [hb]: http://mxcl.github.com/homebrew/
