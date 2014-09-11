@@ -7,7 +7,7 @@ MCU = ENV['MCU'] || 'atmega328p' # 'attiny85'
 PARTNO = ENV['PARTNO'] || MCU
 
 # Flash burner
-PROGRAMMER = ENV['PROGRAMMER'] || 'arduino' # usbasp
+PROGRAMMER = ENV['PROGRAMMER'] ||  'usbasp' # 'arduino'
 SERIAL_PORT = ENV['SERIAL_PORT'] ||  Dir.glob(
       "/dev/tty#{RUBY_PLATFORM =~ /linux/ ? 'USB' : '.usbmodel'}*").first
 

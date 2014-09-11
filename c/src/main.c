@@ -45,7 +45,7 @@ void task(void)
   if (tick >= 1000)
   {
     /* toggle the LED */
-    PORTB ^= _BV(PORTB5);
+    PORTB ^= _BV(PORTB0);
 
     /* reset the tick */
     tick = 0;
