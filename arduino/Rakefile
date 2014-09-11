@@ -1,7 +1,7 @@
 # Arduino Cpp/C++ Rakefile
 # Fit this to your project's target
 
-PROJECT          ||= File.basename(Dir.glob("*.pde").first, ".pde")
+PROJECT          ||= File.basename(Dir.glob("*.ino").first, ".ino")
 MCU              ||= 'atmega328p'
 CPU              ||= '16000000L'
 BITRATE          ||= '57600' # '115200' Uno
@@ -70,11 +70,11 @@ end
 CLEAN.include(BUILD_OUTPUT)
 
 task :preprocess do
-  pde = "#{PROJECT}.pde"
+  ino = "#{PROJECT}.ino"
   cpp = build_output_path("#{PROJECT}.cpp")
   File.open(cpp, 'w') do |file|
     file.puts '#include "Arduino.h"'  #"WProgram.h"'
-    file.puts File.read(pde)
+    file.puts File.read(ino)
   end
 end
 
@@ -110,4 +110,3 @@ task :hex do
   size = `avr-size -A #{hex}`.match(/Total\s*(\d*)/)[1]
   puts "\n\nCompile OK! #{size} bytes."
 end
-
