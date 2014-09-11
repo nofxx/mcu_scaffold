@@ -14,7 +14,7 @@ or download:
 
     https://github.com/nofxx/avr_scaffold/tarball/master    # .tar.gz
 
-And choose a scaffold, <LANG> can be c, cpp, asm or arduino:
+And choose a scaffold, <LANG> options: c, cpp, asm or arduino:
     
     cp -r avr_scaffold/<LANG> ~/newproject
     
