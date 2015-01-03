@@ -15,9 +15,9 @@ or download:
     https://github.com/nofxx/avr_scaffold/tarball/master    # .tar.gz
 
 And choose a scaffold, <LANG> options: c, cpp, asm or arduino:
-    
+
     cp -r avr_scaffold/<LANG> ~/newproject
-    
+
 
 ## Common Usage
 
@@ -181,7 +181,3 @@ Programmer USBASP.
 [adp]: http://arduino.cc/en/Main/Software
 [rake]: http://en.wikipedia.org/wiki/Rake_(software)
 [hb]: http://mxcl.github.com/homebrew/
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nofxx/avr_scaffold/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
