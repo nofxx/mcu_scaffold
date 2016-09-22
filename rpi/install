@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if hash pacman 2>/dev/null; then
+  print 'Archlinux Install...'
+  pacman -Sy --no-confirm ruby wiringpi
+fi
+
+if hash apt-get 2>/dev/null; then
+  print 'Raspbian Install...'
+  apt-get install ruby ruby-dev wiringpi
+fi
+
+print 'Installing gems...'
+gem --no-rdoc --no-ri install bundler wiringpi

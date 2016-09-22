@@ -1,0 +1,11 @@
+# Lua Rakefile
+
+# Flash esptool.py
+# NODE_VERSION = '0.'
+# NODE_URL = ''
+
+# task :get_binaries do
+#   `wget #{NODEURL}`
+# end
+# https://nodemcu-build.com
+'python esptool.py --port /dev/ttyUSB0  write_flash 0x00000 nodemcu.bin'
