@@ -25,6 +25,7 @@ SRC = FileList["#{SRCDIR}/**/*.c"]
 require 'rake/clean'
 require 'fileutils'
 
+
 # Create a mapping from objects to source files.
 OBJ = SRC.inject({}) do |cont, s|
   obj_file = File.join(BUILDDIR, s.ext('o'))

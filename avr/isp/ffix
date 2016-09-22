@@ -1,0 +1,108 @@
+#!/usr/bin/env ruby
+require 'yaml'
+
+puts "FUSE FIXER!"
+puts
+puts ARGV.inspect
+
+TIME = Time.now
+FUSES = [:hfuse, :lfuse, :efuse, :lock]
+
+PROG ||= ARGV.shift
+CHIP ||= ARGV.shift
+PORT ||= ARGV.shift
+
+SAFE = "-B 1000 -b 57600"
+
+TEMP = "/tmp/avburn"
+
+AvrdudeConf = File.open("/etc/avrdude.conf").read
+Memory = %w{ eeprom flash fuse efuse hfuse lfuse lock signature fuseN application apptable boot prodsig usersig }
+
+
+Format = {
+  :a => "Auto detect",
+  :i => "Intel Hex",
+  :s => "Motorola S-record",
+  :r => "Raw binary",
+  # :m => "Immediate",
+  :d => "Decimal",
+  :h => "Hexadecimal",
+  :o => "Octal",
+  :b => "Binary" }  #todo hash
+
+FuseLabel = YAML.load(File.read(File.dirname(__FILE__) + "/fuses.yml"))
+
+
+class Prog
+  def self.all
+    @progs ||= AvrdudeConf.scan(/programmer\n\s*id\s*=\s*"(\w*)"\s*;/).flatten.sort
+  end
+end
+
+class FuseStore < Hash
+  attr_reader :hfuse, :lfuse, :efuse
+
+  def hfuse
+    [:hfuse]
+  end
+
+  def set(fuse, hex)
+    hex = "0#{hex}" if hex.size == 1
+    hex = hex[0,2]
+    self[fuse.to_sym] =  Integer("0x#{hex}").to_s(2).rjust(8, "0").split(//)
+    self["#{fuse}hex"] = hex.upcase
+  end
+
+  def set_bit(fuse, bit, bool)
+    self[fuse][bit] = (bool ? "0" : "1")
+    hexval = self[fuse].join.to_i(2).to_s(16).upcase
+    hexval = "0#{hexval}" if hexval.size == 1
+    self["#{fuse}hex"] = hexval
+    hexval
+  end
+end
+
+
+def run! comm
+  puts "> #{comm} (Y/n)"
+  # confirm = gets
+  # return if confirm == 'n'
+  # %x( #{comm} )
+  Kernel.system "#{comm} &> #{TEMP}"
+  File.read(TEMP)
+end
+
+def command comm = '-v', bus = nil
+  out =  "avrdude #{SAFE} -c #{PROG} -p #{CHIP} "
+  out << "-P #{bus}" if bus
+  out + comm
+end
+
+def print_fuse name, i
+  "#{name}: 0x#{i.to_s(16).ljust(2, '0')} #{i.to_s(2).rjust(8, '0')}"
+end
+def work!
+  unless PROG && CHIP
+    puts "ffix <programmer> <chip/mcu> <command>"
+    exit
+  end
+  unless labels = FuseLabel[CHIP.to_sym]
+    puts "Can't find labels for #{CHIP}"
+    puts FuseLabel.keys
+    exit
+  end
+  comm = ARGV.join
+  puts "Running check...\n\n" if comm.empty?
+
+  bus = Dir.glob('/dev/tty#{PORT}*').first
+
+  # send comm
+  puts res = run!(command(comm, bus))
+  e,h,l = res.scan(/E:(\w{2}), H:(\w{2}), L:(\w{2})/)[0].map { |s| s.to_i(16) }
+  puts "Fuses | #{print_fuse('H', l)}  |  #{print_fuse('L', l)}  |  #{print_fuse('E', e)}"
+  puts "Done #{Time.now - TIME}"
+end
+
+
+work!
