@@ -8,4 +8,33 @@
 #   `wget #{NODEURL}`
 # end
 # https://nodemcu-build.com
-'python esptool.py --port /dev/ttyUSB0  write_flash 0x00000 nodemcu.bin'
+# 'python esptool.py --port /dev/ttyUSB0  write_flash 0x00000 nodemcu.bin'
+namespace :mcu do
+  def tty
+    Dir.glob(RUBY_PLATFORM =~ /darwin/ ? '/dev/tty.usbmodem*' : '/dev/ttyUSB*').first
+  end
+
+  desc 'Synchronizes your lua code with the device'
+  task :sync do
+    Dir['*.lua'].each do |f|
+      sh "luatool.py --port #{tty} -b 115200 --src #{f} --dest #{f}"
+    end
+  end
+
+  desc 'Dumps firmware'
+  task :dump do
+    memsize = `esptool.py --port #{tty}`
+  end
+
+  # https://nodemcu.readthedocs.io/en/dev/en/flash/
+  # 0x3fc000 esp_init_data_default.bin
+  desc 'Flash device with NodeMCU Firmware ;)'
+  task :flash do
+    raise 'Please provide a firmware.bin' unless ARGV[1]
+    sh "esptool.py --port #{tty} erase_flash"
+    puts 'Sleep...'
+    sleep(9)
+    sh "esptool.py --port #{tty} write_flash -fm dio -fs 32m 0x00000 "\
+       "#{ARGV[1]} 0x3fc000 esp_init_data_default.bin"
+  end
+end
