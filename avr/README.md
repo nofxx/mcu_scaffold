@@ -1,22 +1,22 @@
-# MCUs SCAFFOLD
+# AVR SCAFFOLD
 
-Collection of Rakefiles to start of and avoid IDEs.
+Collection of Rakefiles to start of and avoid the Arduino IDE.
 
 Here you'll find a pure C, C++ and Arduino C++ scaffolds with optional libraries support.
 
 Just clone:
 
-    git clone git://github.com/nofxx/mcu_scaffold.git
+    git clone git://github.com/nofxx/avr_scaffold.git
 
 or download:
 
-    https://github.com/nofxx/mcu_scaffold/zipball/master    # .zip
+    https://github.com/nofxx/avr_scaffold/zipball/master    # .zip
 
-    https://github.com/nofxx/mcu_scaffold/tarball/master    # .tar.gz
+    https://github.com/nofxx/avr_scaffold/tarball/master    # .tar.gz
 
 And choose a scaffold, <LANG> options: c, cpp, asm or arduino:
 
-    cp -r mcu_scaffold/<LANG> ~/newproject
+    cp -r avr_scaffold/<LANG> ~/newproject
 
 
 ## Common Usage
@@ -38,8 +38,8 @@ $ rake clobber # clean the project
 ## Getting Started
 
 The following are instructions for getting up and running under different
-operating systems. This will take you through installing mcu-gcc, mcu-libc,
-mcudude, and the MCU GNU Binutils.
+operating systems. This will take you through installing avr-gcc, avr-libc,
+avrdude, and the AVR GNU Binutils.
 
 
 
@@ -52,13 +52,13 @@ manager. Open a terminal and run the following command:
 Debian/Ubuntu
 
 ```bash
-$ sudo apt-get install binutils-mcu mcu-libc mcudude gcc-mcu
+$ sudo apt-get install binutils-avr avr-libc avrdude gcc-avr
 ```
 
 Archlinux
 
 ```bash
-$ sudo pacman -S mcudude gcc-mcu
+$ sudo pacman -S avrdude gcc-avr
 ```
 
 ## Building and Running the Sample Project
@@ -88,7 +88,7 @@ the Programmer Serial Port' later in this document.
 
 ### OSX
 
-I recommend installing the needed MCU tools by means of [Homebrew][hb]. If
+I recommend installing the needed AVR tools by means of [Homebrew][hb]. If
 you're already setup with homebrew, then you should just have to execute the
 following commands. If not, take a moment to read a bit about Homebrew and get
 it setup on your Mac.
@@ -96,10 +96,10 @@ it setup on your Mac.
 Once you're ready, here are the commands to install the needed tools:
 
 ```bash
-$ brew install mcudude
-$ brew install https://raw.github.com/larsimmisch/homebrew-alt/3a4f8ce4bcda88c25f4fa4ea3f42688a2ed03d12/mcu/mcu-binutils.rb
-$ brew install https://raw.github.com/larsimmisch/homebrew-alt/124853640317af04e11269c517d449dbd202773d/mcu/mcu-gcc.rb
-$ brew install https://raw.github.com/larsimmisch/homebrew-alt/7d774c6b15dafdee6ca518aff5e8368528d69ae0/mcu/mcu-libc.rb
+$ brew install avrdude
+$ brew install https://raw.github.com/larsimmisch/homebrew-alt/3a4f8ce4bcda88c25f4fa4ea3f42688a2ed03d12/avr/avr-binutils.rb
+$ brew install https://raw.github.com/larsimmisch/homebrew-alt/124853640317af04e11269c517d449dbd202773d/avr/avr-gcc.rb
+$ brew install https://raw.github.com/larsimmisch/homebrew-alt/7d774c6b15dafdee6ca518aff5e8368528d69ae0/avr/avr-libc.rb
 ```
 
 **These are built from source and will take a while to complete.**
@@ -155,6 +155,27 @@ http://www.der-hammer.info/terminal
 gtkterm - Linux/Mac
 https://fedorahosted.org/gtkterm
 
+
+## ASSEMBLY
+
+There's .inc files included in asm/incs.
+After trying for full day to download from:
+http://www.attiny.com/definitions.htm
+Server was off.
+
+
+## Exploring the Source Code
+
+TBD
+
+
+## AVR Scaffold
+
+This works with others arduinos and barebones AVRs too.
+Tested on Duemilanove and the Blackwidow.
+
+Chips ATMEGA328p, ATMEGA32, ATMEGA64 and ATTiny85.
+Programmer USBASP.
 
 
 [adp]: http://arduino.cc/en/Main/Software
