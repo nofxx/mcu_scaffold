@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-
-pacman --version >/dev/null 2>&1 || { echo >&2 "Only archlinux, sorry."; exit 1; }
-
-pacman -Sy --no-confirm avrdude avr-gcc simavr ruby

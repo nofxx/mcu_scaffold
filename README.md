@@ -1,8 +1,12 @@
-# MCUs SCAFFOLD
+# MCUs SCAFFOLDs
 
 Collection of Rakefiles to start of and avoid IDEs.
 
-Here you'll find a pure C, C++ and Arduino C++ scaffolds with optional libraries support.
+Or graphically:
+
+AVR + ~~IDE~~ Ruby = FUN
+ESP + ~~IDE~~ Ruby = FUN
+ARM + ~~IDE~~ Ruby = FUN
 
 Just clone:
 
@@ -14,25 +18,24 @@ or download:
 
     https://github.com/nofxx/mcu_scaffold/tarball/master    # .tar.gz
 
-And choose a scaffold, <LANG> options: c, cpp, asm or arduino:
 
-    cp -r mcu_scaffold/<LANG> ~/newproject
-
-
-## Common Usage
-
-```bash
-$ rake -T # see all tasks
-$ rake # build the project, flash to the arduino
-$ rake clobber # clean the project
-```
+## And choose a MCU:
 
 
-## Board Resources
+## AVR
 
-* ATMega328P datasheet - http://www.atmel.com/dyn/resources/prod_documents/doc8161.pdf
-* Arduino UNO Schematic - http://arduino.cc/en/uploads/Main/arduino-uno-schematic.pdf
+The 8bit father of all. From ATMEL, you know it from Arduino.
+The CPU, the famous ATmega328.
 
+## ARM
+
+Up to 64 bits of linux fun. 
+Lots of CPUs here, and nevermind if you have a kernel to worry about that.
+
+## ESP
+
+Xtensa CPU. The cheap answer to ARM's 32bits reign.
+With wifi!
 
 
 ## Getting Started
