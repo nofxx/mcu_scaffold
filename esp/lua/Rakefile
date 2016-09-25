@@ -1,17 +1,15 @@
+#
 # Lua Rakefile
-
-# Flash esptool.py
-# NODE_VERSION = '0.'
-# NODE_URL = ''
+#
 
 # task :get_binaries do
 #   `wget #{NODEURL}`
 # end
-# https://nodemcu-build.com
-# 'python esptool.py --port /dev/ttyUSB0  write_flash 0x00000 nodemcu.bin'
+
 namespace :mcu do
   def tty
-    Dir.glob(RUBY_PLATFORM =~ /darwin/ ? '/dev/tty.usbmodem*' : '/dev/ttyUSB*').first
+    Dir.glob(RUBY_PLATFORM =~ /darwin/ ? '/dev/tty.usbmodem*' : '/dev/ttyUSB*')
+       .first
   end
 
   desc 'Synchronizes your lua code with the device'
@@ -23,9 +21,11 @@ namespace :mcu do
 
   desc 'Dumps firmware'
   task :dump do
-    memsize = `esptool.py --port #{tty}`
+    # memsize = `esptool.py --port #{tty}`
+    sh "esptool.py --port #{tty} -b 460800 read_flash 0x0000 4096000 dump.bin"
   end
 
+  # https://nodemcu-build.com
   # https://nodemcu.readthedocs.io/en/dev/en/flash/
   # 0x3fc000 esp_init_data_default.bin
   desc 'Flash device with NodeMCU Firmware ;)'
