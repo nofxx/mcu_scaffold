@@ -4,9 +4,11 @@ Collection of Rakefiles to start of and avoid IDEs.
 
 Or graphically:
 
-AVR + ~~IDE~~ Ruby = FUN
-ESP + ~~IDE~~ Ruby = FUN
-ARM + ~~IDE~~ Ruby = FUN
+> AVR + ~~IDE~~ Ruby = FUN
+
+> ESP + ~~IDE~~ Ruby = FUN
+
+> ARM + ~~IDE~~ Ruby = FUN
 
 
 Just clone:
