@@ -8,6 +8,7 @@ AVR + ~~IDE~~ Ruby = FUN
 ESP + ~~IDE~~ Ruby = FUN
 ARM + ~~IDE~~ Ruby = FUN
 
+
 Just clone:
 
     git clone git://github.com/nofxx/mcu_scaffold.git
@@ -24,16 +25,20 @@ or download:
 
 ## AVR
 
+ATmega Family.
 The 8bit father of all. From ATMEL, you know it from Arduino.
 The CPU, the famous ATmega328.
 
 ## ARM
 
+Linux Boards -> Rpi/BBB
+Cortex M? STM32...
 Up to 64 bits of linux fun. 
 Lots of CPUs here, and nevermind if you have a kernel to worry about that.
 
 ## ESP
 
+ESP32/ESP8266/NodeMCU/WeMos
 Xtensa CPU. The cheap answer to ARM's 32bits reign.
 With wifi!
 
@@ -45,26 +50,7 @@ operating systems. This will take you through installing mcu-gcc, mcu-libc,
 mcudude, and the MCU GNU Binutils.
 
 
-
-### Linux
-
-Getting the environment up and running on Linux is quite simple. One
-need only install some packages. These are all supported in the package
-manager. Open a terminal and run the following command:
-
-Debian/Ubuntu
-
-```bash
-$ sudo apt-get install binutils-mcu mcu-libc mcudude gcc-mcu
-```
-
-Archlinux
-
-```bash
-$ sudo pacman -S mcudude gcc-mcu
-```
-
-## Building and Running the Sample Project
+### Building and Running the Sample Project
 
 Each scaffold is driven by a Rakefile. If you're not familiar with
 [Rake][rake], you'll want to take some time to familiarize yourself with it.
@@ -88,24 +74,14 @@ the Programmer Serial Port' later in this document.
     rake SERIAL_PORT=[serial port name]
 
 
+### Linux
+
+Just check each chip folder for it's own README.md.
+Most package names are from archlinux.
 
 ### OSX
 
-I recommend installing the needed MCU tools by means of [Homebrew][hb]. If
-you're already setup with homebrew, then you should just have to execute the
-following commands. If not, take a moment to read a bit about Homebrew and get
-it setup on your Mac.
-
-Once you're ready, here are the commands to install the needed tools:
-
-```bash
-$ brew install mcudude
-$ brew install https://raw.github.com/larsimmisch/homebrew-alt/3a4f8ce4bcda88c25f4fa4ea3f42688a2ed03d12/mcu/mcu-binutils.rb
-$ brew install https://raw.github.com/larsimmisch/homebrew-alt/124853640317af04e11269c517d449dbd202773d/mcu/mcu-gcc.rb
-$ brew install https://raw.github.com/larsimmisch/homebrew-alt/7d774c6b15dafdee6ca518aff5e8368528d69ae0/mcu/mcu-libc.rb
-```
-
-**These are built from source and will take a while to complete.**
+I recommend installing the needed MCU tools by means of [Homebrew][hb]. 
 
 
 ## Serial Monitor
